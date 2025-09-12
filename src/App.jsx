@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
-import CategoryList from "./components/Categories/CategoryList";
+import CategoryList from "./pages/CategoryList";
 import CategoriaDetalle from "./pages/CategoriaDetalle";
 import ModeloPersonalizar from "./pages/ModeloPersonalizar";
 import Carrito from "./pages/Carrito";
 import Footer from "./components/Footer";
-import FAQ from "../src/components/FAQ";
+import FAQ from "./pages/FAQ";
 
 function App() {
  return (

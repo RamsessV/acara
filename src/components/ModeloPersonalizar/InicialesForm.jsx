@@ -17,10 +17,11 @@ export function InicialesForm({
     .filter((v, i, self) => self.indexOf(v) === i);
 
   const letrasValidas = iniciales.split("").every((l) => {
-    if (l === "Ñ") return true;
     const letraData = letrasData.find(
       (item) =>
-        item.letter === l && item.size === tamanoLetra && item.color === colorLetra
+        item.letter === l &&
+        item.size === tamanoLetra &&
+        item.color === colorLetra
     );
     if (!letraData) return false;
     const ocurrencias = iniciales.split("").filter((x) => x === l).length;
@@ -34,99 +35,135 @@ export function InicialesForm({
   }
 
   return (
-    <>
-      <div className="mb-3">
-        <div className="mb-2 fw-bold">¿Deseas añadir tus iniciales?</div>
-        <div className="form-check form-check-inline">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="iniciales"
-            checked={!mostrarIniciales}
-            onChange={() => setMostrarIniciales(false)}
-          />
-          <label className="form-check-label">No</label>
+    <div className="card shadow-sm border-0 rounded-3 mb-3 form-iniciales">
+      <div className="card-body">
+        {/* Pregunta inicial */}
+        <h5 className="fw-bold mb-3">
+          ¿Deseas añadir tus iniciales?
+        </h5>
+        <div className="d-flex gap-4 mb-3">
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="iniciales"
+              checked={!mostrarIniciales}
+              onChange={() => setMostrarIniciales(false)}
+              id="noIniciales"
+            />
+            <label className="form-check-label" htmlFor="noIniciales">
+              No
+            </label>
+          </div>
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="iniciales"
+              checked={mostrarIniciales}
+              onChange={() => setMostrarIniciales(true)}
+              id="siIniciales"
+            />
+            <label className="form-check-label" htmlFor="siIniciales">
+              Sí
+            </label>
+          </div>
         </div>
-        <div className="form-check form-check-inline">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="iniciales"
-            checked={mostrarIniciales}
-            onChange={() => setMostrarIniciales(true)}
-          />
-          <label className="form-check-label">Sí</label>
-        </div>
-      </div>
 
-      {mostrarIniciales && (
-        <div className="mb-3">
-          <label className="form-label">
-            Iniciales (máx: {modelo?.max || 4})
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            value={iniciales}
-            onChange={handleIniciales}
-            maxLength={modelo?.max || 4}
-            style={{ textTransform: "uppercase", width: 120 }}
-            placeholder="ABCÑ"
-          />
-
-          {/* Tamaño */}
-          <div className="mt-2">
-            <label className="form-label">Tamaño:</label>
-            <select
-              className="form-select"
-              value={tamanoLetra}
-              onChange={(e) => {
-                setTamanoLetra(e.target.value);
-                setColorLetra("");
+        {mostrarIniciales && (
+          <div className="animate-fadeIn">
+            {/* Input Iniciales */}
+            <label className="form-label fw-semibold">
+              Iniciales (máx: {modelo?.max || 4}) Ñ para estrella
+            </label>
+            <input
+              type="text"
+              className="form-control form-control-lg text-center shadow-sm"
+              value={iniciales}
+              onChange={handleIniciales}
+              maxLength={modelo?.max || 4}
+              style={{
+                textTransform: "uppercase",
+                letterSpacing: "2px",
+                fontWeight: "bold",
+                width: 150,
+                margin: "0 auto",
               }}
-            >
-              {tamanos.map((t, i) => (
-                <option key={t}>{t}</option>
-              ))}
-            </select>
-          </div>
+              placeholder="ABCÑ"
+            />
 
-          {/* Color */}
-          <div className="mt-2">
-            <label className="form-label">Color de letra:</label>
-            <div className="d-flex gap-2 mt-1">
-              {coloresDisponibles.map((c) => {
-                let bg = c === "oro" ? "gold" : c === "plata" ? "silver" : "black";
-                const seleccionado = colorLetra === c;
-                return (
-                  <div
-                    key={c}
-                    className="rounded-circle d-flex align-items-center justify-content-center"
-                    style={{
-                      width: 28,
-                      height: 28,
-                      backgroundColor: bg,
-                      cursor: "pointer",
-                      border: seleccionado ? "3px solid #333" : "1px solid #ccc",
-                    }}
-                    onClick={() => setColorLetra(c)}
-                  >
-                    {seleccionado && (
-                      <span style={{ color: "#fff", fontSize: 14 }}>✓</span>
-                    )}
-                  </div>
-                );
-              })}
+            {/* Tamaño */}
+            <div className="mt-4">
+              <label className="form-label fw-semibold">Tamaño</label>
+              <select
+                className="form-select shadow-sm"
+                value={tamanoLetra}
+                onChange={(e) => {
+                  setTamanoLetra(e.target.value);
+                  setColorLetra("");
+                }}
+              >
+                {tamanos.map((t) => (
+                  <option key={t}>{t}</option>
+                ))}
+              </select>
             </div>
-          </div>
 
-          {!letrasValidas && (
-            <div className="alert alert-warning mt-2">
-              Letras no disponibles en stock, sobre pedido
+            {/* Colores */}
+            <div className="mt-4">
+              <label className="form-label fw-semibold">Color de letra</label>
+              <div className="d-flex gap-3 mt-2 flex-wrap">
+                {coloresDisponibles.map((c) => {
+                  let bg =
+                    c === "oro"
+                      ? "linear-gradient(135deg, #FFD700, #FFC107)"
+                      : c === "plata"
+                      ? "linear-gradient(135deg, #C0C0C0, #E0E0E0)"
+                      : "black";
+                  const seleccionado = colorLetra === c;
+                  return (
+                    <div
+                      key={c}
+                      className={`rounded-circle d-flex align-items-center justify-content-center shadow-sm color-selector ${
+                        seleccionado ? "selected" : ""
+                      }`}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        background: bg,
+                        cursor: "pointer",
+                        border: seleccionado
+                          ? "3px solid #333"
+                          : "1px solid #ccc",
+                        transition: "transform 0.2s ease",
+                      }}
+                      onClick={() => setColorLetra(c)}
+                    >
+                      {seleccionado && (
+                        <span
+                          style={{
+                            color: "#fff",
+                            fontSize: 18,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          ✓
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          )}
-        </div>
-      )}
-    </>
+
+            {!letrasValidas && (
+              <div className="alert alert-warning mt-4 shadow-sm">
+                ⚠️ Letras no disponibles en stock, se hacen sobre pedido.
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

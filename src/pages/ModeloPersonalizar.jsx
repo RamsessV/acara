@@ -9,6 +9,8 @@ import { ModeloImagen } from "../components/ModeloPersonalizar/ModeloImagen";
 import { SelectorColores } from "../components/ModeloPersonalizar/SelectorColores";
 import { InicialesForm } from "../components/ModeloPersonalizar/InicialesForm";
 import { Medidas } from "../components/ModeloPersonalizar/Medidas";
+import Loading from "../components/Loading";
+
 
 export default function ModeloPersonalizar() {
   const { id } = useParams();
@@ -49,21 +51,21 @@ export default function ModeloPersonalizar() {
 
   if (!modelo || !color) {
     return (
-      <div className="container" style={{ marginTop: "5rem" }}>
-        <div className="alert alert-info shadow-sm">Cargando modelo...</div>
+      <div className="container">
+        <div className="alert alert-info shadow-sm text-center"><Loading /></div>
       </div>
     );
   }
 
   return (
-    <div className="container" style={{ marginTop: "5rem", maxWidth: 500 }}>
-      <h2 className="mb-4 text-center fw-bold text-uppercase">{modelo.name}</h2>
+    <div className="container modelo-container mt-5">
+      <h2 className="modelo-title mb-4 text-center text-uppercase">{modelo.name}</h2>
 
       <ModeloImagen color={color} />
 
-      <p className="text-center fs-5 mt-3">
+      <p className="precio text-center fs-5 mt-3">
         <strong>Precio:</strong>{" "}
-        <span className="text-warning fw-bold">${modelo.precio}</span>
+        <span className="precio-valor">${modelo.precio}</span>
       </p>
 
       <SelectorColores colores={colores} color={color} setColor={setColor} />
@@ -96,7 +98,7 @@ export default function ModeloPersonalizar() {
       <div className="toast-container position-fixed bottom-0 end-0 p-3">
         <div
           id="carritoToast"
-          className="toast bg-dark text-white border-0"
+          className="toast toast-premium"
           role="alert"
           aria-live="assertive"
           aria-atomic="true"

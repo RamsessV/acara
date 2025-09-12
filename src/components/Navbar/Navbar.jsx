@@ -6,7 +6,7 @@ export default function Navbar() {
  const cartCount = useCartCount();
 
  return (
-  <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <nav className="navbar navbar-expand-lg bg-sec fixed-top navbar-dark fw-bold">
    <div className="container-fluid">
     <Link className="navbar-brand" to="/">
      Acara Bags
@@ -51,8 +51,8 @@ export default function Navbar() {
         <span className="position-relative me-2">
          <i className="fas fa-shopping-cart"></i>
          <span
-          className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-          style={{ fontSize: "0.7rem" }}
+          className="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-count"
+          style={{ fontSize: "0.7rem",  }}
          >
           {cartCount}
          </span>
@@ -68,7 +68,7 @@ export default function Navbar() {
       className="nav-link d-none d-lg-block ms-auto position-relative text-white"
      >
       <i className="fas fa-shopping-cart fa-lg"></i>
-      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-count">
        {cartCount}
       </span>
      </Link>

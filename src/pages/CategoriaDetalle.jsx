@@ -1,6 +1,7 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useModelsByCategory } from "../hooks/useModelByCategory";
 import ModeloCard from "../components/CategoriaDetalle/ModelCard";
+import Loading from "../components/Loading";
 
 export default function CategoriaDetalle() {
   const { id } = useParams();
@@ -14,7 +15,7 @@ export default function CategoriaDetalle() {
       <h2 className="mb-4">Explora {cname}</h2>
 
       {loading ? (
-        <div className="text-center">Cargando modelos...</div>
+        <div className="text-center"><Loading /></div>
       ) : modelos.length === 0 ? (
         <div className="alert alert-info text-center">
           No hay modelos para esta categoría.

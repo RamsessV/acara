@@ -4,7 +4,7 @@ import logo from '../assets/icon.jpeg'; // Ajusta la ruta a tu logo
 
 export default function Footer() {
   return (
-    <footer className="bg-dark text-white pt-4 pb-3 mt-5">
+    <footer className="bg-third text-white pt-4 pb-3 mt-5">
       <div className="container">
         <div className="row align-items-center">
           {/* Información de la tienda con logo */}
