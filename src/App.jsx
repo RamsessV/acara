@@ -1,22 +1,21 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import ScrollToTop from "./components/ScrollToTop";
 import Navbar from "./components/Navbar/Navbar";
-import CategoryList from "./pages/CategoryList";
-import CategoriaDetalle from "./pages/CategoriaDetalle";
-import ModeloPersonalizar from "./pages/ModeloPersonalizar";
-import Carrito from "./pages/Carrito";
-import Footer from "./components/Footer";
-import FAQ from "./pages/FAQ";
+import Home from "./pages/Home";
+import Footer from "./components/Footer/Footer";
+import Products from "./pages/Products";
 
 function App() {
  return (
   <BrowserRouter>
    <Navbar />
+    <ScrollToTop />
    <Routes>
-    <Route path="/" element={<CategoryList />} />
-    <Route path="/categoria/:id" element={<CategoriaDetalle />} />
-    <Route path="/modelo/:id" element={<ModeloPersonalizar />} />
-    <Route path="/carrito" element={<Carrito />} />
-    <Route path="/faq" element={<FAQ />} />
+    <Route path="/" element={<Home />} />
+    <Route path="/products" element={<Products />} />
+    <Route path="/products/:categoryId" element={<Products />} />
+    <Route path="/products/search/:searchTerm" element={<Products />} />
    </Routes>
    <Footer />
   </BrowserRouter>

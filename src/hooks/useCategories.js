@@ -1,24 +1,29 @@
-import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabaseClient";
+import {supabase} from '../lib/supabaseClient';
+import { useState, useEffect } from 'react';
+export default function useCategories() {
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-export function useCategories() {
-  const [categories, setCategories] = useState([]);
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('categorias')
+                    .select('*');
 
-  useEffect(() => {
-    async function fetchCategories() {
-      const { data, error } = await supabase
-        .from("categorias")
-        .select("id, name, img");
+                if (error) throw error;
 
-      if (error) {
-        console.error("Error fetching categories:", error.message);
-        return;
-      }
+                setCategories(data);
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-      if (data) setCategories(data);
-    }
-    fetchCategories();
-  }, []);
+        fetchCategories();
+    }, []);
 
-  return categories;
+    return { categories, loading, error };
 }

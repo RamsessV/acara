@@ -1,79 +1,97 @@
-import { Link } from "react-router-dom";
-import { useCartCount } from "../../hooks/useCartCount";
-import CategoriesDropdown from "../navbar/CategoriesDropDown";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
- const cartCount = useCartCount();
+  const navigate = useNavigate();
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
 
- return (
-  <nav className="navbar navbar-expand-lg bg-sec fixed-top navbar-dark fw-bold">
-   <div className="container-fluid">
-    <Link className="navbar-brand" to="/">
-     Acara Bags
-    </Link>
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      navigate(`/products/search/${searchTerm}`);
+      setSearchTerm("");
+      setShowSearch(false);
+      setMenuOpen(false); // opcional: cerrar menú si estaba abierto
+    }
+  };
 
-    <button
-     className="navbar-toggler"
-     type="button"
-     data-bs-toggle="collapse"
-     data-bs-target="#navbarScroll"
-     aria-controls="navbarScroll"
-     aria-expanded="false"
-     aria-label="Toggle navigation"
-    >
-     <span className="navbar-toggler-icon"></span>
-    </button>
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const closeMenu = () => setMenuOpen(false);
 
-    <div className="collapse navbar-collapse" id="navbarScroll">
-     <ul className="navbar-nav me-auto my-2 my-lg-0">
-      <li className="nav-item">
-       <Link className="nav-link active" to="/">
-        Inicio
-       </Link>
-      </li>
+  return (
+    <nav className="navbar navbar-expand-lg bg-white shadow-sm">
+      <div className="container-fluid">
+        {/* Toggler móvil */}
+        <button
+          className="navbar-toggler border-0"
+          type="button"
+          onClick={toggleMenu}
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-      <CategoriesDropdown />
+        {/* Logo */}
+        <a className="navbar-brand fw-bold mx-auto" href="/">
+          Acara Bags
+        </a>
 
-      <li className="nav-item">
-       <a
-        href="https://www.instagram.com/acara.bags/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="nav-link"
-       >
-        <i className="fab fa-instagram"></i> Síguenos en Instagram
-       </a>
-      </li>
+        {/* Iconos a la derecha */}
+        <div className="d-flex align-items-center">
+          {/* Icono de búsqueda */}
+          <div className="position-relative">
+            <button
+              className="btn btn-link text-dark"
+              onClick={() => setShowSearch(!showSearch)}
+            >
+              <i className="bi bi-search"></i>
+            </button>
 
-      {/* Carrito (solo en móvil dentro del collapse) */}
-      <li className="nav-item d-lg-none">
-       <Link to="/carrito" className="nav-link d-flex align-items-center">
-        <span className="position-relative me-2">
-         <i className="fas fa-shopping-cart"></i>
-         <span
-          className="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-count"
-          style={{ fontSize: "0.7rem",  }}
-         >
-          {cartCount}
-         </span>
-        </span>
-        Carrito
-       </Link>
-      </li>
-     </ul>
+            {showSearch && (
+              <input
+                type="text"
+                className="form-control position-absolute end-0"
+                style={{ top: "100%", width: "200px" }}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
+                autoFocus
+                placeholder="Buscar..."
+              />
+            )}
+          </div>
 
-     {/* Carrito (a la derecha en pantallas grandes) */}
-     <Link
-      to="/carrito"
-      className="nav-link d-none d-lg-block ms-auto position-relative text-white"
-     >
-      <i className="fas fa-shopping-cart fa-lg"></i>
-      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-count">
-       {cartCount}
-      </span>
-     </Link>
-    </div>
-   </div>
-  </nav>
- );
+          <button className="btn btn-link text-dark">
+            <i className="bi bi-bag"></i>
+          </button>
+        </div>
+
+        {/* Menú */}
+        <div className={`collapse navbar-collapse ${menuOpen ? "show" : ""}`}>
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <a className="nav-link" href="/" onClick={closeMenu}>
+                Inicio
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/products/1" onClick={closeMenu}>
+                Bolsos
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/products/2" onClick={closeMenu}>
+                Carteras
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/products" onClick={closeMenu}>
+                Todos nuestros productos
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
 }
